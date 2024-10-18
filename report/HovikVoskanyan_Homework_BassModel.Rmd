@@ -18,6 +18,10 @@ library(readxl)
 library(diffusion)
 ```
 
+I chose to analyze stroller Innovation that gives a benefit to carry a luggage a long with children (https://time.com/collection/best-inventions-2022/6224793/ternx-carry-on/) and then I've found historical sales data in North Americas stroller market that as the product itself is designed by North American market it is sensible to analyze their market first.
+
+The link to data is attached in readme file 
+
 Scope : I have to analyze US's Stroller Market 
 
 
