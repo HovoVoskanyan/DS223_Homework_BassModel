@@ -1,0 +1,96 @@
+---
+title: "Marketing Analytics"
+author: "Hovik Voskanyan"
+date: "2024-10-17"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+library('ggplot2')
+library('ggpubr')
+library('knitr')
+library(readxl)
+library(diffusion)
+```
+
+Scope : I have to analyze US's Stroller Market 
+
+
+```{r}
+#read Data
+
+data<- read_excel("../data/StrollerSalesData.xlsx")
+
+data$Sales = data$Sales * 1000000
+
+head(data)
+```
+
+```{r}
+
+sm_sales = ggplot(data = data, aes(x = Year, y = Sales)) +
+geom_bar(stat = 'identity') +
+ggtitle('Smartphone sales, mln units')
+
+ggarrange(sm_sales)
+```
+
+
+
+
+Now we define model
+```{r}
+sales = data$Sales
+t = 1:length(sales)
+bass_m = nls(sales ~ m*(((p+q)^2/p)*exp(-(p+q)*t))/(1+(q/p)*exp(-(p+q)*t))^2,start=c(list(m=sum(sales),p=0.02,q=0.4)))
+
+summary(bass_m)
+# I kin
+
+```
+Now we see the estimated parameters
+we need bass Model functions
+```{r}
+bass.F <- function(t, p, q) {
+  numerator <- 1 - exp(-(p + q) * t)
+  denominator <- 1 + (q / p) * exp(-(p + q) * t)
+  return(numerator / denominator)
+}
+
+bass.f <- function(t, p, q) {
+  F_t <- bass.F(t, p, q)
+  return(p + q * F_t)
+}
+```
+
+
+```{r}
+time_ad = ggplot(data.frame(t = c(1:14)), aes(t)) +
+stat_function(fun = bass.f, args = c(p=4.503e-02, q=9.761e-02)) +
+labs(title = 'f(t)')
+
+ggarrange(time_ad, sm_sales)
+
+```
+Calculating estimations using diffusion
+```{r}
+diff_m = diffusion(sales)
+p=round(diff_m$w,4)[1]
+q=round(diff_m$w,4)[2]
+m=round(diff_m$w,4)[3]
+diff_m
+```
+
+SCOPE : Our Scope is bounded in North Amerika's market as we are analyzing Sales in North America only
+
+```{r}
+data.frame(Predicted=log(q/p)/(p+q),
+Actual=which.max(data$Sales))
+```
+
+
