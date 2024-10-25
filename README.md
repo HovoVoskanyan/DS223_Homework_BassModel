@@ -1,16 +1,16 @@
-#Marketing Analytics Report: US Stroller Market
+# Marketing Analytics Report: US Stroller Market
 This project contains an RMarkdown (.RMD) file that generates a report on the US stroller market using sales data and the Bass Diffusion Model for marketing analytics.
 
-#Author
-#Hovik Voskanyan
+# Author
+# Hovik Voskanyan
 
-#Date
+# Date
 2024-10-17
 
 Overview
 The purpose of this analysis is to examine the US stroller market based on sales data and apply the Bass diffusion model to estimate market potential, innovation, and imitation coefficients. The report is generated in PDF format.
 
-#Files and Directories
+# Files and Directories
 1. report/
 MarketingAnalytics.Rmd: The main RMarkdown file that generates the marketing analytics report in PDF format.
 2. data/
